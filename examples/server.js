@@ -85,7 +85,6 @@ function registerBaseRouter() {
   })
 
   router.post('/base/post', function(req, res) {
-    console.log(req)
     res.json(req.body)
   })
 
