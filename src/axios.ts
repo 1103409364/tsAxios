@@ -1,42 +1,16 @@
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './types'
-import { buildUrl } from './helpers/url'
-import { transformRequest, transformResponse } from './helpers/data'
-import xhr from './xhr'
-import { processHeaders } from './helpers/headers'
+import { AxiosInstance } from './types'
+import Axios from './core/Axios'
+import { extend } from './helpers/util'
 
-function axios(config: AxiosRequestConfig): AxiosPromise {
-  processConfig(config)
+// 创建axios 混合对象
+function createInstance(): AxiosInstance {
+  const context = new Axios()
+  const instance = Axios.prototype.request.bind(context)
 
-  return xhr(config).then(res => {
-    // 返回的可能是字符串，尝试转为json
-    return transformResponseData(res)
-  })
+  extend(instance, context)
+  return instance as AxiosInstance
 }
 
-// 处理配置
-function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformURL(config)
-  config.headers = transformHeaders(config) // 先处理headers再处理data
-  config.data = transformRequestData(config)
-}
+const axios = createInstance()
 
-// 处理url参数
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildUrl(url, params)
-}
-// 处理body
-function transformRequestData(config: AxiosRequestConfig): any {
-  return transformRequest(config.data)
-}
-// 解析header
-function transformHeaders(config: AxiosRequestConfig): any {
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-// 解析response data
-function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data)
-  return res
-}
 export default axios

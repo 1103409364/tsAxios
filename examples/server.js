@@ -158,7 +158,7 @@ function registerExtendRouter() {
     res.json({
       code: 0,
       message: 'ok',
-      result: {
+      data: {
         name: 'jack',
         age: 18
       }
