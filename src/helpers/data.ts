@@ -14,7 +14,9 @@ export function transformResponse(data: any): any {
     try {
       data = JSON.parse(data)
     } catch (e) {
-      console.log(e)
+      // data 如果是不是json字符串，会报错Unexpected token d in JSON at position 0
+      // 例如 data 为 "hello"
+      console.error(e)
     }
   }
   return data
