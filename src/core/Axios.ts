@@ -8,6 +8,7 @@ import {
 } from '../types'
 import dispatchRequest from './dispatchRequest'
 import InterceptorManager from './InterceptorManager'
+import mergeConfig from './mergeConfig'
 
 interface Interceptors {
   request: InterceptorManager<AxiosRequestConfig> // 拦截器管理类的实例
@@ -20,9 +21,12 @@ interface PromiseChain<T> {
 }
 
 export default class Axios {
+  defaults: AxiosRequestConfig
   interceptors: Interceptors
   // 拦截器初始化 添加拦截器 用户调用 axios.interceptors.request()
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
+
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
@@ -39,6 +43,9 @@ export default class Axios {
     } else {
       config = url
     }
+
+    config = mergeConfig(this.defaults, config)
+    config.method = config.method.toLowerCase()
     // 实现链式调用 resolved 的值设为 dispatchRequest
     const chain: PromiseChain<any>[] = [{ resolved: dispatchRequest, rejected: undefined }]
     // 请求拦截器 先添加的后执行
@@ -72,6 +79,8 @@ export default class Axios {
     return this._requestMethodWithoutData('options', url, config)
   }
   post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
+    console.log(config)
+
     return this._requestMethodWithData('post', url, data, config)
   }
   put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
