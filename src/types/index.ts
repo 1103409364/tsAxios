@@ -24,7 +24,9 @@ export interface AxiosRequestConfig {
   timeout?: number
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
-  cancelToken: CancelToken
+  cancelToken?: CancelToken
+  withCredentials?: boolean
+
   [propName: string]: any // 索引签名，用于 mergeConfig config1[key]
 }
 // 返回数据支持类型推断
