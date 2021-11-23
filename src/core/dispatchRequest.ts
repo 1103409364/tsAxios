@@ -21,7 +21,7 @@ function processConfig(config: AxiosRequestConfig): void {
 }
 
 // 处理url参数
-function transformURL(config: AxiosRequestConfig): string {
+export function transformURL(config: AxiosRequestConfig): string {
   const { url, params } = config
   return buildUrl(url!, params) // 断言 url 不为空
 }
