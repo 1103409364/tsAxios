@@ -30,6 +30,7 @@ export interface AxiosRequestConfig {
   xsrfHeaderName?: string
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
+  auth?: AxiosBasicCredentials
 
   [propName: string]: any // 索引签名，用于 mergeConfig config1[key]
 }
@@ -137,4 +138,9 @@ export interface Cancel {
 
 export interface CancelStatic {
   new (message?: string): Cancel
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }
