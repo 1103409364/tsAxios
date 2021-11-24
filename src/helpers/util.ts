@@ -15,7 +15,7 @@ export function isPlainObject(val: any): val is Object {
 export function isFormData(val: any): val is FormData {
   return typeof val !== 'undefined' && val instanceof FormData
 }
-
+// 是否是查询字符串
 export function isURLSearchParams(val: any): val is URLSearchParams {
   return typeof val !== 'undefined' && val instanceof URLSearchParams
 }
